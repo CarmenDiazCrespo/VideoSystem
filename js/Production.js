@@ -1,16 +1,21 @@
 function Production(title, nationality, publication, synopsis, image){
-    //La función se invoca con el operador new
+    //La función se invoca con el operador new.
     if (!(this instanceof Production)) 
         throw new InvalidAccessConstructorException();
+
+    if ((this.constructor === Production)) {
+        throw new AbstractClassException("Production");
+    }
         
-    //Estos parametros son obligatorios, así me aseguro que no están vacios
+    //Estos parametros son obligatorios, así me aseguro que no están vacios.
     if (!title || title == '') throw new EmptyValueException("title");
     if (!nationality || nationality == '' )  throw new EmptyValueException("nationality");
     if (!publication || publication == '' ) throw new EmptyValueException("publication");
-
+    
+    //Los que no son obligatorios los sustituyos por vacios.
     var _title = title;
     var _nationality = nationality;
-    var _image = image || "";
+    var _image = image || ""; 
     var _publication = publication;
     var _synopsis = synopsis || "";
     

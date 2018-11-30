@@ -1,9 +1,10 @@
-function Person(name, lastname1, lastname2, born,picture){
-    //La función se invoca con el operador new
+function Person(name, lastname1, lastname2, born, picture){ //Aunque no son obligatorios los meto por aquí para 
+    //que se puedan meter en el constructor.
+    //La función se invoca con el operador new.
     if (!(this instanceof Person)) 
         throw new InvalidAccessConstructorException();
         
-    //Estos parametros son obligatorios, así me aseguro que no están vacios
+    //Estos parametros son obligatorios, así me aseguro que no están vacios.
     if (!name || name == '') throw new EmptyValueException("name");
     if (!lastname1 || lastname1 == '' )  throw new EmptyValueException("lastname1");
     if (!born || born == '' ) throw new EmptyValueException("born");

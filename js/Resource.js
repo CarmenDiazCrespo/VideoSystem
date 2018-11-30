@@ -6,11 +6,12 @@ function Rosource(duration, link, audios,subtitles){
         
     //Estos parametros son obligatorios, así me aseguro que no están vacios
     if (!duration || duration == '') throw new EmptyValueException("duration");
-    if (Number.isNaN(duration)) throw new InvalidValueException("duration", duration); //Esto no me funciona, por qué?
+    if (!/^[+]?\d+([,.]\d+)?$/.test(duration)) throw new InvalidValueException("duration", duration); //Son minutos
     if (!link || link == '' )  throw new EmptyValueException("link");
+    if (!/^www\.[\d\w]+\.(com|net|es)$/.test(link)) throw new InvalidValueException("link",link);	
 
 
-    var _duration = duration;
+    var _duration = duration; //Son minutos
     var _link = link;
     var _audios = audios || [];
     var _subtitles = subtitles || [];
@@ -21,6 +22,7 @@ function Rosource(duration, link, audios,subtitles){
         },
         set: function(value){
             if (!value|| value == '') throw new EmptyValueException("duration");
+            if (!/^[+]?\d+([,.]\d+)?$/.test(duration)) throw new InvalidValueException("duration", duration);
             _duration=value;
         }
     });
@@ -30,6 +32,7 @@ function Rosource(duration, link, audios,subtitles){
         },
         set: function(value){
             if (!value || value == '') throw new EmptyValueException("link");
+            if (!/^www\.[\d\w]+\.(com|net|es)$/.test(link)) throw new InvalidValueException("link",link);
             _link=value;
         }
     });
@@ -61,7 +64,7 @@ Rosource.prototype.toString = function(){
 
 /*function test(){
     var audios =["caca"," popo"," 1234"];
-    var p1= new Rosource(1.35,"www.cacapopo.com",audios);
+    var p1= new Rosource(NaN,"www.cacapopo.com",audios);
     console.log(p1.toString());
 }
 window.onload = test;*/
