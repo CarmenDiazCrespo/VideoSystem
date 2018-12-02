@@ -1,14 +1,14 @@
-function Rosource(duration, link, audios,subtitles){
+function Resource(duration, link, audios, subtitles){
     //audios y subtitulos son arrays no obligatorios, pero los pongo ahí para que se puedan meter en el contructor
     //La función se invoca con el operador new
-    if (!(this instanceof Rosource)) 
+    if (!(this instanceof Resource)) 
         throw new InvalidAccessConstructorException();
         
     //Estos parametros son obligatorios, así me aseguro que no están vacios
     if (!duration || duration == '') throw new EmptyValueException("duration");
     if (!/^[+]?\d+([,.]\d+)?$/.test(duration)) throw new InvalidValueException("duration", duration); //Son minutos
     if (!link || link == '' )  throw new EmptyValueException("link");
-    if (!/^www\.[\d\w]+\.(com|net|es)$/.test(link)) throw new InvalidValueException("link",link);	
+    if (!/^www\.[\d\w]+\.(com|net|es|org)$/.test(link)) throw new InvalidValueException("link",link);	
 
 
     var _duration = duration; //Son minutos
@@ -32,7 +32,7 @@ function Rosource(duration, link, audios,subtitles){
         },
         set: function(value){
             if (!value || value == '') throw new EmptyValueException("link");
-            if (!/^www\.[\d\w]+\.(com|net|es)$/.test(link)) throw new InvalidValueException("link",link);
+            if (!/^www\.[\d\w]+\.(com|net|es|org)$/.test(link)) throw new InvalidValueException("link",link);
             _link=value;
         }
     });
@@ -54,9 +54,9 @@ function Rosource(duration, link, audios,subtitles){
         }
     });
 }
-Rosource.prototype = {};
-Rosource.prototype.constructor = Rosource;
-Rosource.prototype.toString = function(){
+Resource.prototype = {};
+Resource.prototype.constructor = Resource;
+Resource.prototype.toString = function(){
     var str = this.duration + " " + this.link + " " + this.audios + " " + this.subtitles;
     return str;
 }
@@ -64,7 +64,7 @@ Rosource.prototype.toString = function(){
 
 /*function test(){
     var audios =["caca"," popo"," 1234"];
-    var p1= new Rosource(NaN,"www.cacapopo.com",audios);
+    var p1= new Resource(NaN,"www.cacapopo.com",audios);
     console.log(p1.toString());
 }
 window.onload = test;*/

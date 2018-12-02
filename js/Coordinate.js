@@ -7,12 +7,12 @@ function Coordinate(latitude, longitude){
         //lo hago así
         if (!latitude || latitude == '') throw new EmptyValueException("latitude");
     }
-	if (/^[+-]?\d+([,.]\d+)?$/ || latitude < -90 || latitude > 90) 
+	if (/^[+-]?\d+([,.]\d+)?$/ || latitude < -90 || latitude > 90) //Tiene que ser un número real entre -90 y 90
         throw new InvalidValueException("latitude", latitude);
     if (latitude !== 0){//La latitud puede ser 0 grados, para no me de como error de vacio lo hago así
         if (!longitude || longitude == '') throw new EmptyValueException("longitude");
     }
-	if (/^[+-]?\d+([,.]\d+)?$/ || longitude < -180 || longitude > 180) 
+	if (/^[+-]?\d+([,.]\d+)?$/ || longitude < -180 || longitude > 180) //Tiene que ser un número real entre -180 y 180
 		throw new InvalidValueException("longitude", longitude);
 
 	var _latitude = latitude;
@@ -23,8 +23,11 @@ function Coordinate(latitude, longitude){
 			return _latitude;
 		},
 		set:function(value){
-			value = typeof value !== 'undefined' ? Number(value).valueOf() : 0;
-			if (Number.isNaN(value)  || value < -90 || value > 90) 
+			if (value !== 0){ //La latitud puede ser 0 grados, para no me de como error de vacio si me pasan un 0
+				//lo hago así
+				if (!value || value == '') throw new EmptyValueException("latitude");
+			}
+			if (/^[+-]?\d+([,.]\d+)?$/ || value < -90 || value > 90) //Tiene que ser un número real entre -90 y 90
 				throw new InvalidValueException("latitude", value);
 			_latitude = value;
 		}		
@@ -35,9 +38,12 @@ function Coordinate(latitude, longitude){
 			return _longitude;
 		},
 		set:function(value){
-			value = typeof value !== 'undefined' ? Number(value).valueOf() : 0;
-			if (Number.isNaN(value)  || value < -180 || value > 180) 
-				throw new InvalidValueException("latitude", value);
+			if (value !== 0){ //La longitude puede ser 0 grados, para no me de como error de vacio si me pasan un 0
+				//lo hago así
+				if (!value || value == '') throw new EmptyValueException("longitude");
+			}
+			if (/^[+-]?\d+([,.]\d+)?$/ || value < -180 || value > 180) //Tiene que ser un número real entre -180 y 180
+				throw new InvalidValueException("longitude", value);
 			_longitude = value;
 		}		
 	});		

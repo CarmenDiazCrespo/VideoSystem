@@ -1,4 +1,4 @@
-function Person(name, lastname1, lastname2, born, picture){ //Aunque no son obligatorios los meto por aquí para 
+function Person(name, lastname1, lastname2 = "", born, picture){ //Aunque no son obligatorios los meto por aquí para 
     //que se puedan meter en el constructor.
     //La función se invoca con el operador new.
     if (!(this instanceof Person)) 
@@ -11,8 +11,8 @@ function Person(name, lastname1, lastname2, born, picture){ //Aunque no son obli
 
     var _name = name;
     var _lastname1 = lastname1;
-    var _lastname2 = lastname2 || "";
-    var _born = born;
+    var _lastname2 = lastname2;
+    var _born = new Date(born);
     var _picture = picture || "";
     
     Object.defineProperty(this, 'name', {
@@ -47,7 +47,7 @@ function Person(name, lastname1, lastname2, born, picture){ //Aunque no son obli
         },
         set: function(value){
             if (!value || value == '') throw new EmptyValueException("born");
-            _born=value;
+            _born= new Date(value);
         }
     });
     Object.defineProperty(this, 'picture', {
@@ -67,6 +67,7 @@ Person.prototype.toString = function(){
 }
 
 /*function test(){
+    console.log("La fecha tiene que ser AAAA-MM-DD");
     var p1= new Person("Maria","");
     console.log(p1.toString());
 }

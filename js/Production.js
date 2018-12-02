@@ -1,22 +1,21 @@
-function Production(title, nationality, publication, synopsis, image){
+var Production=function (title, nationality = "", publication, synopsis, image){
     //La función se invoca con el operador new.
     if (!(this instanceof Production)) 
         throw new InvalidAccessConstructorException();
-
-    if ((this.constructor === Production)) {
+    //Al ser abstracta no se puede instanciar, si se intenta crear un objeto production lanza un error
+    if (this.constructor === Production) {
         throw new AbstractClassException("Production");
     }
-        
+
     //Estos parametros son obligatorios, así me aseguro que no están vacios.
     if (!title || title == '') throw new EmptyValueException("title");
-    if (!nationality || nationality == '' )  throw new EmptyValueException("nationality");
     if (!publication || publication == '' ) throw new EmptyValueException("publication");
     
     //Los que no son obligatorios los sustituyos por vacios.
     var _title = title;
     var _nationality = nationality;
     var _image = image || ""; 
-    var _publication = publication;
+    var _publication = new Date(publication) ;
     var _synopsis = synopsis || "";
     
     Object.defineProperty(this, 'title', {
@@ -33,7 +32,6 @@ function Production(title, nationality, publication, synopsis, image){
             return _nationality;
         },
         set: function(value){
-            if (!value || value == '') throw new EmptyValueException("nationality");
             _nationality=value;
         }
     });
@@ -51,7 +49,7 @@ function Production(title, nationality, publication, synopsis, image){
         },
         set: function(value){
             if (!value || value == '') throw new EmptyValueException("publication");
-            _publication=value;
+            _publication= new Date(value);
         }
     });
     Object.defineProperty(this, 'synopsis', {
@@ -71,7 +69,7 @@ Production.prototype.toString = function(){
 }
 
 /*function test(){
-    var p1= new Production("Maria","");
+    var p1= new Production("Maria","Espana","2018-11-21");
     console.log(p1.toString());
 }
 window.onload = test;*/

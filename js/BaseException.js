@@ -52,7 +52,7 @@ UninstantiatedObjectException.prototype.constructor = UninstantiatedObjectExcept
 //Excepción intento de instacia clase abstracta
 function AbstractClassException(classValue) {
 	this.name = "AbstractClassException";
-	this.message = classValue + " is a abstract class.";
+	this.message = classValue + " is an abstract class.";
 }
 AbstractClassException.prototype = new BaseException(); 
 AbstractClassException.prototype.constructor = AbstractClassException;
