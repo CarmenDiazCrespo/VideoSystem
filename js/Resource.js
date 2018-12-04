@@ -8,7 +8,7 @@ function Resource(duration, link, audios, subtitles){
     if (!duration || duration == '') throw new EmptyValueException("duration");
     if (!/^[+]?\d+([,.]\d+)?$/.test(duration)) throw new InvalidValueException("duration", duration); //Son minutos
     if (!link || link == '' )  throw new EmptyValueException("link");
-    if (!/^www\.[\d\w]+\.(com|net|es|org)$/.test(link)) throw new InvalidValueException("link",link);	
+    if (!/^[\w\-]+(\.[\w\-]+)+[/#?]?.*$/.test(link)) throw new InvalidValueException("link",link);	
 
 
     var _duration = duration; //Son minutos
@@ -64,7 +64,7 @@ Resource.prototype.toString = function(){
 
 /*function test(){
     var audios =["caca"," popo"," 1234"];
-    var p1= new Resource(NaN,"www.cacapopo.com",audios);
+    var p1= new Resource("1.22","cacapopo.com",audios);
     console.log(p1.toString());
 }
 window.onload = test;*/

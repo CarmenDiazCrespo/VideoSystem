@@ -64,7 +64,7 @@ var Production=function (title, nationality = "", publication, synopsis, image){
 Production.prototype = {};
 Production.prototype.constructor = Production;
 Production.prototype.toString = function(){
-    var str = this.title + " " + this.nationality + " " + this.image + " " + this.publication + " " + this.synopsis;
+    var str = this.title + " " + this.nationality + " " + this.image + " " + this.publication.toLocaleDateString() + " " + this.synopsis;
     return str;
 }
 

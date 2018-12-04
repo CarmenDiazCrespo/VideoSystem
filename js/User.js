@@ -1,3 +1,10 @@
+function PasswordException(){
+    this.name = "PasswordException";
+	this.message = "Error: La contraseña debe tener entre 8-16 caracteres, al menos un dígito, al menos una minúscula, al menos una mayúscula y al menos un caracter no alfanumérico.";
+}
+PasswordException.prototype = new BaseException(); //Heredamos de BaseException
+PasswordException.prototype.constructor = PasswordException;
+
 function User(username, email, password){
     //La función se invoca con el operador new
     if (!(this instanceof User)) 
@@ -8,6 +15,7 @@ function User(username, email, password){
     if (!email || email == '' )  throw new EmptyValueException("email");
     if (!/^(.+\@.+\..+)$/.test(email)) throw new InvalidValueException("email",email);
     if (!password || password == '' ) throw new EmptyValueException("password");
+    if (!/^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$/.test(password)) throw new PasswordException();
 
     var _username = username;
     var _email = email;
