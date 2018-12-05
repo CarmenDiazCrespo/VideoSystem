@@ -7,10 +7,13 @@ function Resource(duration, link, audios, subtitles){
     //Estos parametros son obligatorios, así me aseguro que no están vacios
     if (!duration || duration == '') throw new EmptyValueException("duration");
     if (!/^[+]?\d+([,.]\d+)?$/.test(duration)) throw new InvalidValueException("duration", duration); //Son minutos
+    //No puede ser un número negativo, pero acepto los minutos con puntos o comas.
+    //para una hora y media y quince segundos tiene que ser 90.15 o 90,15.
     if (!link || link == '' )  throw new EmptyValueException("link");
     if (!/^[\w\-]+(\.[\w\-]+)+[/#?]?.*$/.test(link)) throw new InvalidValueException("link",link);	
+    //Los links pueden ir con www o no y acepto cualquier teminación (.es, .com, .org...).
 
-
+    
     var _duration = duration; //Son minutos
     var _link = link;
     var _audios = audios || [];

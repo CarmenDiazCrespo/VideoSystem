@@ -24,7 +24,7 @@ function Season(title, episodes){ //Aunque no son obligatorios los meto por aqu√
         get: function(){
             return _episodes;
         },
-        set: function(value=[]){
+        set: function(value = []){
             _episodes=value;
         }
     });

@@ -7,7 +7,7 @@ function Category(name,description){
     if (!name || name == '') throw new EmptyValueException("name");
 
     var _name = name;
-    var _description = description || "";
+    var _description = description || ""; //Puede estar vacio, si no me lo pasan lo pongo yo en vacio
     
     Object.defineProperty(this, 'name', {
         get: function(){
@@ -23,7 +23,7 @@ function Category(name,description){
         get: function(){
             return _description;
         },
-        set: function(value){
+        set: function(value = ""){
             _description=value;
         }
     });

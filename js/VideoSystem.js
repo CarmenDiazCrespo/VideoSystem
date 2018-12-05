@@ -8,7 +8,9 @@ var VideoSystem = (function () { //La función anónima devuelve un método getI
 		function VideoSystem(){
 			//La función se invoca con el operador new
 			if (!(this instanceof VideoSystem)) 
-                throw new InvalidAccessConstructorException();
+				throw new InvalidAccessConstructorException();
+			
+			
                 
         }
         VideoSystem.prototype = {}; 

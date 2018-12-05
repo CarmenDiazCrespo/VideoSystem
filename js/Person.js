@@ -8,8 +8,10 @@ function Person(name, lastname1, lastname2 = "", born, picture){ //Aunque no son
     if (!name || name == '') throw new EmptyValueException("name");
     if (!lastname1 || lastname1 == '' )  throw new EmptyValueException("lastname1");
     if (!born || born == '' ) throw new EmptyValueException("born");
-    if (!/^\d{4}([\-/.])(0?[1-9]|1[1-2])\1(3[01]|[12][0-9]|0?[1-9])$/.test(born)) throw new InvalidValueException("born",born);	
-
+    if (!/^\d{4}([\-/.])(0?[1-9]|1[1-2])\1(3[01]|[12][0-9]|0?[1-9])$/.test(born)) 
+        throw new InvalidValueException("born",born);	//Tiene que ir AAAA-MMM-DDD
+   
+    //Los parametros no obligatorios los pongo vacios si no me pasan nada
     var _name = name;
     var _lastname1 = lastname1;
     var _lastname2 = lastname2;
@@ -38,7 +40,7 @@ function Person(name, lastname1, lastname2 = "", born, picture){ //Aunque no son
         get: function(){
             return _lastname2;
         },
-        set: function(value){
+        set: function(value = ""){
             _lastname2=value;
         }
     });
@@ -48,6 +50,8 @@ function Person(name, lastname1, lastname2 = "", born, picture){ //Aunque no son
         },
         set: function(value){
             if (!value || value == '') throw new EmptyValueException("born");
+            if (!/^\d{4}([\-/.])(0?[1-9]|1[1-2])\1(3[01]|[12][0-9]|0?[1-9])$/.test(born)) 
+                throw new InvalidValueException("born",born); //Tiene que ir AAAA-MMM-DDD
             _born= new Date(value);
         }
     });
@@ -55,7 +59,7 @@ function Person(name, lastname1, lastname2 = "", born, picture){ //Aunque no son
         get: function(){
             return _picture;
         },
-        set: function(value){
+        set: function(value = ""){
             _picture=value;
         }
     });

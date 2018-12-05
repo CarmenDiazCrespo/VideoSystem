@@ -10,6 +10,8 @@ var Production=function (title, nationality = "", publication, synopsis, image){
     //Estos parametros son obligatorios, así me aseguro que no están vacios.
     if (!title || title == '') throw new EmptyValueException("title");
     if (!publication || publication == '' ) throw new EmptyValueException("publication");
+    if (!/^\d{4}([\-/.])(0?[1-9]|1[1-2])\1(3[01]|[12][0-9]|0?[1-9])$/.test(publication)) 
+        throw new InvalidValueException("publication",publication); //Tiene que ser AAAA-MMM-DD
     
     //Los que no son obligatorios los sustituyos por vacios.
     var _title = title;
@@ -31,7 +33,7 @@ var Production=function (title, nationality = "", publication, synopsis, image){
         get: function(){
             return _nationality;
         },
-        set: function(value){
+        set: function(value = ""){
             _nationality=value;
         }
     });
@@ -39,7 +41,7 @@ var Production=function (title, nationality = "", publication, synopsis, image){
         get: function(){
             return _image;
         },
-        set: function(value){
+        set: function(value = ""){
             _image=value;
         }
     });
@@ -49,6 +51,8 @@ var Production=function (title, nationality = "", publication, synopsis, image){
         },
         set: function(value){
             if (!value || value == '') throw new EmptyValueException("publication");
+            if (!/^\d{4}([\-/.])(0?[1-9]|1[1-2])\1(3[01]|[12][0-9]|0?[1-9])$/.test(publication)) 
+                throw new InvalidValueException("publication",publication); //Tiene que ser AAAA-MMM-DD
             _publication= new Date(value);
         }
     });
@@ -56,7 +60,7 @@ var Production=function (title, nationality = "", publication, synopsis, image){
         get: function(){
             return _synopsis;
         },
-        set: function(value){
+        set: function(value = ""){
             _synopsis=value;
         }
     });
@@ -69,6 +73,7 @@ Production.prototype.toString = function(){
 }
 
 /*function test(){
+    console.log("La fecha tiene que ser AAAA-MM-DD");
     var p1= new Production("Maria","Espana","2018-11-21");
     console.log(p1.toString());
 }

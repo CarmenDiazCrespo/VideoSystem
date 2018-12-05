@@ -15,7 +15,10 @@ function User(username, email, password){
     if (!email || email == '' )  throw new EmptyValueException("email");
     if (!/^(.+\@.+\..+)$/.test(email)) throw new InvalidValueException("email",email);
     if (!password || password == '' ) throw new EmptyValueException("password");
-    if (!/^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$/.test(password)) throw new PasswordException();
+    if (!/^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$/.test(password)) 
+        throw new PasswordException();
+    //La contraseña debe tener entre 8-16 caracteres, al menos un dígito, al menos una minúscula, al menos 
+    //una mayúscula y al menos un caracter no alfanumérico.
 
     var _username = username;
     var _email = email;
@@ -46,6 +49,11 @@ function User(username, email, password){
         },
         set: function(value){
             if (!value || value == '') throw new EmptyValueException("password");
+            if (!/^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$/.test(password)) 
+                throw new PasswordException();
+                //La contraseña debe tener entre 8-16 caracteres, al menos un dígito, al menos una minúscula, al menos 
+                //una mayúscula y al menos un caracter no alfanumérico.
+
             _password=value;
         }
     });
