@@ -7,8 +7,9 @@ function Movie(title, nationality = "", publication,synopsis = "", image = "", r
     Production.call(this, title, nationality, publication,synopsis, image); //llamamos al constructor del padre
 
     //Ninguno de las propiedades es obligatorias
+    var _locations = [];
     var _resource = resource || "";
-    var _locations = locations || [];
+    var _locations = locations;
     
     Object.defineProperty(this, 'resource', {
         get: function(){
@@ -23,8 +24,13 @@ function Movie(title, nationality = "", publication,synopsis = "", image = "", r
         get: function(){
             return _locations;
         },
-        set: function(value = []){
-            _locations=value;
+        set: function(value){
+            if(Array.isArray(value)){ //Por si me pasan un array entero
+                _locations = value;
+            }else{ // o un solo valor para añadir
+                _locations.push(value);
+            }
+            
         }
     });
 
@@ -37,8 +43,10 @@ Movie.prototype.toString = function(){
     return str;
 }
 
-/*function test(){
-    var p1= new Movie("Queen","Espana","1955-12-22","Romance en Roma","","Maria","Africa","");
+function test(){
+    var p1= new Movie("Queen","Espana","1955-12-22","Romance en Roma","","Maria");
+    console.log(p1.toString());
+    p1.locations = "3";
     console.log(p1.toString());
 }
-window.onload = test;*/
+window.onload = test;
