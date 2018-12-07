@@ -14,6 +14,7 @@ function User(username, email, password){
     if (!username || username == '') throw new EmptyValueException("username");
     if (!email || email == '' )  throw new EmptyValueException("email");
     if (!/^(.+\@.+\..+)$/.test(email)) throw new InvalidValueException("email",email);
+    //Ejemplo de la esturctura de email: carmen.diaz@yahoo.org
     if (!password || password == '' ) throw new EmptyValueException("password");
     if (!/^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$/.test(password)) 
         throw new PasswordException();

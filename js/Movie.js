@@ -24,7 +24,8 @@ function Movie(title, nationality = "", publication,synopsis = "", image = "", r
         get: function(){
             return _locations;
         },
-        set: function(value){
+        set: function(value){ //Revisar, no funciona
+            console.log("revisar Movie locations");
             if(Array.isArray(value)){ //Por si me pasan un array entero
                 _locations = value;
             }else{ // o un solo valor para añadir
@@ -43,10 +44,10 @@ Movie.prototype.toString = function(){
     return str;
 }
 
-function test(){
+/*function test(){
     var p1= new Movie("Queen","Espana","1955-12-22","Romance en Roma","","Maria");
     console.log(p1.toString());
     p1.locations = "3";
     console.log(p1.toString());
 }
-window.onload = test;
+window.onload = test;*/
