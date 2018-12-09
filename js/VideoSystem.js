@@ -65,7 +65,7 @@ var VideoSystem = (function () { //La función anónima devuelve un método getI
 				}	
 			});
 			//Si el username devuelve true
-			this.userExistUsername = function (user){
+			function userExistUsername(user){
 				var e = false;
 				for(var i = 0; i<_users.length; i++){
 					if(_users[i].username === user.username){
@@ -75,7 +75,7 @@ var VideoSystem = (function () { //La función anónima devuelve un método getI
 				return e;
 			}
 			//Si existe Email devuelve true
-			this.userExistEmail = function(user){
+			function userExistEmail(user){
 				var e = false;
 				for(var i = 0; i<_users.length; i++){
 					if(_users[i].email == user.email){
@@ -95,7 +95,8 @@ var VideoSystem = (function () { //La función anónima devuelve un método getI
 				if (!user|| user === '') throw new EmptyValueException("user");
 
 				//Busco que no exista el username que me han pasado.
-				if(userExistUsername(user)){
+				var t = userExistUsername(user);
+				if(t){
 					throw new RepeatException("username");
 				}
 				
@@ -147,7 +148,7 @@ var VideoSystem = (function () { //La función anónima devuelve un método getI
 				}	
 			});
 			//Devuelve true si existe el director
-			this.directorExist = function (director){
+			function directorExist(director){
 				var e = false;
 				for(var i = 0; i<_directores.length; i++){
 					//Compruebo que nombre y apellido porque es muy raro que el nombre y el apellido sea el mismo.
@@ -185,7 +186,7 @@ var VideoSystem = (function () { //La función anónima devuelve un método getI
 
 				//Busco que no exista el director que me han pasado.
 				if(!directorExist(director)){
-					throw new NotExistException("user");
+					throw new NotExistException("director");
 				}
 				//Si todo va bien añado el usuario.
 				for(var i = 0; i<_directores.length; i++){
@@ -197,10 +198,159 @@ var VideoSystem = (function () { //La función anónima devuelve un método getI
 				//Devuelvo el número de elementos del array de directores.
 				return _directores.length;
 			}
+			
 			var _productions = [];
-			var _actores = [];
+			//Devuelve un iterator de los productions del gestor.
+			Object.defineProperty(this, 'productions', {
+				get:function(){
+				    var nextIndex = 0;		    
+				    return {
+				       next: function(){
+				           return nextIndex < _productions.length ?
+				               {value: _productions[nextIndex++], done: false} :
+				               {done: true};
+				       }
+				    }
+				}	
+			});
+			//Devuelve true si existe el production.
+			function productionExist(production){
+				var e = false;
+				for(var i = 0; i<_productions.length; i++){ //Compruebo que no se repite el título.
+					if(_productions[i].title === production.title){
+						e = true;
+					}
+				}
+				return e;
+			}
+			//Dado un production, devuelve la posición de ese autor en el array de autores.
+			this.addProduction = function (production){
+				//El parametro que me pasan tiene que ser un objeto tipo Production.
+				if (!(production instanceof Production)) { 
+					throw new InvalidAccessMethodException();
+				}		
+				//production no puede estar vacio.
+				if (!production || production === '') throw new EmptyValueException("production");
+
+				//Busco si existe el production.
+				if(productionExist(production)){
+					throw new RepeatException("production");
+				}
+				//Si todo va bien añado el production.
+				_productions.push(production);
+				//Devuelvo el número de elementos que tiene el array _productions.
+				return _productions.length;
+			}
+			//Borrar una producción del array _productions.
+			this.removeProduction = function (production){
+				//El parametro que me pasan tiene que ser un objeto tipo Production.
+				if (!(production instanceof Production)) { 
+					throw new InvalidAccessMethodException();
+				}		
+				//production no puede estar vacio.
+				if (!production || production === '') throw new EmptyValueException("production");
+
+				//Busco que no exista el production que me han pasado.
+				if(!productionExist(production)){
+					throw new NotExistException("production");
+				}
+				//Si todo va bien añado el usuario.
+				for(var i = 0; i<_productions.length; i++){
+					if(_productions[i].title === production.title){ 
+						//Busco el indice del elemento que me han pasado comparando el título.
+						_productions.splice(i,1);
+					}
+				}
+				//Devuelvo el número de elementos del array de producciones.
+				return _productions.length;
+			}
+			
+			var _actors = [];
+			//Devuelve un iterator de los actors del gestor.
+			Object.defineProperty(this, 'actors', {
+				get:function(){
+				    var nextIndex = 0;		    
+				    return {
+				       next: function(){
+				           return nextIndex < _actors.length ?
+				               {value: _actors[nextIndex++], done: false} :
+				               {done: true};
+				       }
+				    }
+				}	
+			});
+			//Devuelve true si existe el actor.
+			function actorExist(actor){
+				var e = false;
+				for(var i = 0; i<_actors.length; i++){ //Compruebo que no se repite el nombre y apellido.
+					if(_actors[i].name === actor.name && _actors[i].lastname1 === actor.lastname1){
+						e = true;
+					}
+				}
+				return e;
+			}
+			//Dado un actor, devuelve la posición de ese autor en el array de autores.
+			this.addActor = function (actor){
+				//El parametro que me pasan tiene que ser un objeto tipo actor.
+				if (!(actor instanceof Person)) { 
+					throw new InvalidAccessMethodException();
+				}		
+				//actor no puede estar vacio.
+				if (!actor || actor === '') throw new EmptyValueException("actor");
+
+				//Busco si existe el actor.
+				if(actorExist(actor)){
+					throw new RepeatException("actor");
+				}
+				//Si todo va bien añado el actor.
+				_actors.push(actor);
+				//Devuelvo el número de elementos que tiene el array _actors.
+				return _actors.length;
+			}
+			//Borrar una producción del array _actors.
+			this.removeActor = function (actor){
+				//El parametro que me pasan tiene que ser un objeto tipo Person.
+				if (!(actor instanceof Person)) { 
+					throw new InvalidAccessMethodException();
+				}		
+				//actor no puede estar vacio.
+				if (!actor || actor === '') throw new EmptyValueException("actor");
+
+				//Busco que no exista el actor que me han pasado.
+				if(!actorExist(actor)){
+					throw new NotExistException("actor");
+				}
+				//Si todo va bien añado el usuario.
+				for(var i = 0; i<_actors.length; i++){
+					if(_actors[i].name === actor.name && _actors[i].lastname1 === actor.lastname1){ 
+						//Busco el indice del elemento que me han pasado comparando nombre y el primer apellido.						//Busco el indice del elemento que me han pasado comparando el título.
+						_actors.splice(i,1);
+					}
+				}
+				//Devuelvo el número de elementos del array de actores.
+				return _actors.length;
+			}
 			var _categorias = []
-                
+        	/*this.assingDirector = function (director, productions){
+				//director tiene que ser un objeto tipo Person.
+				if (!(director instanceof Person)) { 
+					throw new InvalidAccessMethodException();
+				}		
+				//director no puede estar vacio.
+				if (!director|| director === '') throw new EmptyValueException("director");
+				//Si el director no existe lo añado.
+				if(!directorExist(director)){
+					addDirector(director);
+				}
+				//production no puede estar vacio.
+				if (!productions|| productions === '') throw new EmptyValueException("productions");
+				//Si no existe se añade.
+				if(!productionExist(productions)){
+					addProduction(productions);
+				}
+				Object.assign(director, productions);
+				return director.productions.length();
+			}*/
         }
         VideoSystem.prototype = {}; 
 		VideoSystem.prototype.constructor = VideoSystem;

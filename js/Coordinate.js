@@ -7,12 +7,12 @@ function Coordinate(latitude, longitude){
         //lo hago así
         if (!latitude || latitude == '') throw new EmptyValueException("latitude");
     }
-	if (/^[+-]?\d+([,.]\d+)?$/ || latitude < -90 || latitude > 90) //Tiene que ser un número real entre -90 y 90
+	if (!/^[+-]?\d+([,.]\d+)?$/ || latitude < -90 || latitude > 90) //Tiene que ser un número real entre -90 y 90
         throw new InvalidValueException("latitude", latitude);
     if (latitude !== 0){//La latitud puede ser 0 grados, para no me de como error de vacio lo hago así
         if (!longitude || longitude == '') throw new EmptyValueException("longitude");
     }
-	if (/^[+-]?\d+([,.]\d+)?$/ || longitude < -180 || longitude > 180) //Tiene que ser un número real entre -180 y 180
+	if (!/^[+-]?\d+([,.]\d+)?$/ || longitude < -180 || longitude > 180) //Tiene que ser un número real entre -180 y 180
 		throw new InvalidValueException("longitude", longitude);
 
 	var _latitude = latitude;
