@@ -18,6 +18,9 @@ function testVideoSystem(){
     //objetos actor = persona
     var ac1= new Person("John","Cusack","","1970-8-28");
     var ac2= new Person("Monolo","Lopez","","1993-12-16");
+    //objetos category
+    var cat1= new Category("Terror","Las películas que más miedo dan");
+    var cat2= new Category("Drama");
     //prueba de la propiedad name (get y set).
     function testName(){
         console.log("--> Prueba de Name <--");
@@ -50,9 +53,17 @@ function testVideoSystem(){
     //Prueba de Actores
     function testActor(){
         console.log("--> Prueba de Actor <--");
-        console.log("La longitud del array de actor es: "+vs.addActor(dir1));
-        console.log("La longitud del array de actor es: "+vs.addActor(dir2));
-        console.log("La longitud del array de actor es: "+vs.removeActor(dir2));
+        console.log("La longitud del array de actor es: "+vs.addActor(ac1));
+        console.log("La longitud del array de actor es: "+vs.addActor(ac2));
+        console.log("La longitud del array de actor es: "+vs.removeActor(ac2));
+        
+    }
+    //Prueba de Category
+    function testCategory(){
+        console.log("--> Prueba de Category <--");
+        console.log("La longitud del array de categoria es: "+vs.addCategory(cat1));
+        console.log("La longitud del array de categoria es: "+vs.addCategory(cat2));
+        console.log("La longitud del array de categoria es: "+vs.removeCategory(cat1));
         
     }
     //llamamos a los métodos.
@@ -61,5 +72,6 @@ function testVideoSystem(){
     testDirector();
     testProduction();
     testActor();
+    testCategory();
 }
 window.onload = testVideoSystem;
