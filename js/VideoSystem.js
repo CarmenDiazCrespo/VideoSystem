@@ -147,7 +147,7 @@ var VideoSystem = (function () { //La función anónima devuelve un método getI
 				    return {
 				       next: function(){
 				           return nextIndex < _directores.length ?
-				               {value: _directores[nextIndex++], done: false} :
+				               {value: _directores[nextIndex++].director, done: false} :
 				               {done: true};
 				       }
 				    }
@@ -356,21 +356,20 @@ var VideoSystem = (function () { //La función anónima devuelve un método getI
 				    return {
 				       next: function(){
 				           return nextIndex < _categorias.length ?
-				               {value: _categorias[nextIndex++], done: false} :
+				               {value: _categorias[nextIndex++].categoria, done: false} :
 				               {done: true};
 				       }
 				    }
 				}	
 			});
 			//Devuelve true si existe el categoria.
-			function categoriaExist(categoria){
-				var e = false;
+			function getCategoryPosition(categoria){
 				for(var i = 0; i<_categorias.length; i++){ //Compruebo que no se repite el nombre.
-					if(_categorias[i].name === categoria.name){
-						e = true;
+					if(_categorias[i].categoria.name === categoria.name){
+						return i;
 					}
 				}
-				return e;
+				return -1;
 			}
 			//Dado un categoria, devuelve la posición de esa categoria en el array de categorias.
 			this.addCategory = function (categoria){
@@ -378,15 +377,19 @@ var VideoSystem = (function () { //La función anónima devuelve un método getI
 				if (!(categoria instanceof Category)) { 
 					throw new InvalidAccessMethodException();
 				}		
+				console.log("He entrado");
 				//categoria no puede estar vacio.
 				if (!categoria || categoria === '') throw new EmptyValueException("categoria");
 
 				//Busco si existe el categoria.
-				if(categoriaExist(categoria)){
+				if(getCategoryPosition(categoria) !== -1){
 					throw new RepeatException("categoria");
 				}
 				//Si todo va bien añado el categoria.
-				_categorias.push(categoria);
+				_categorias.push(
+					{categoria:categoria,
+					cProduction:[]}
+				);
 				//Devuelvo el número de elementos que tiene el array _categorias.
 				return _categorias.length;
 			}
@@ -400,18 +403,29 @@ var VideoSystem = (function () { //La función anónima devuelve un método getI
 				if (!categoria || categoria === '') throw new EmptyValueException("categoria");
 
 				//Busco que no exista el categoria que me han pasado.
-				if(!categoriaExist(categoria)){
+				if(getCategoryPosition(categoria)===-1){
 					throw new NotExistException("categoria");
 				}
 				//Si todo va bien lo añado.
-				for(var i = 0; i<_categorias.length; i++){
-					if(_categorias[i].title === categoria.title){ 
-						//Busco el indice del elemento que me han pasado comparando el nombre.
-						_categorias.splice(i,1);
-					}
-				}
+				var post = getCategoryPosition(categoria); 
+				//Busco el indice del elemento que me han pasado comparando el nombre.
+				_categorias.splice(post,1);
 				//Devuelvo el número de elementos del array de categoria.
 				return _categorias.length;
+			}
+			//Fin de adds and removes
+			function getProPosition(production, categoryProduction){
+				if (!(production instanceof Production)) { 
+					throw new ProductionVideoSystemException();
+				}		
+				for(var i=0; i<categoryProduction.length; i++){
+					console.log("entro en el for");
+					if(categoryProduction[i].title === production.title){
+						return i;
+						console.log("hola");
+					}
+				}
+				return -1;		
 			}
         	this.assingDirector = function (director, production){
 				//director tiene que ser un objeto tipo Person.
@@ -421,26 +435,30 @@ var VideoSystem = (function () { //La función anónima devuelve un método getI
 				//director no puede estar vacio.
 				if (!director|| director === '') throw new EmptyValueException("director");
 				//Si el director no existe lo añado.
-				if(!directorExist(director)){
-					addDirector(director);
-				}
+				var directorPosition = getDirectorPosition(director);
+                if (directorPosition === -1) {
+                    this.addDirector(director);
+                }
 				//production no puede estar vacio.
 				if (!production|| production === '') throw new EmptyValueException("productions");
 				//Si no existe se añade.
 				if(Array.isArray(production)){
-					for(var i=0;i<production.length;i++){ //Por si en el array que me pasan no hay una producción.
+					for(var i=0;i<_productions.length;i++){ //Por si en el array que me pasan no hay una producción.
 						if(!productionExist(production)){
-							addProduction(production);
+							this.addProduction(production);
 						}
 					}
 				}else if(!productionExist(production)){
-					addProduction(production);
+					this.addProduction(production);
 				}
-				var directorPosition = getDirectorPosition(director);
 				//Añadimos al director la/las producciones.
-                _directores[directorPosition].dProductions.push(production);
-
-				return director[directorPosition].dProductions.length;
+				var directorPosition = getDirectorPosition(director);
+				var posProduction = getProPosition(production, _directores[directorPosition].dProductions);
+                if (posProduction !== -1) {
+					throw new NotExistException(director);
+                }
+				_directores[directorPosition].dProductions.push(production);
+				return _directores[directorPosition].dProductions.length;
 			}
 			this.deassingDirector = function (director, production){
 				//director tiene que ser un objeto tipo Person.
@@ -449,6 +467,54 @@ var VideoSystem = (function () { //La función anónima devuelve un método getI
 				}		
 				//director no puede estar vacio.
 				if (!director|| director === '') throw new EmptyValueException("director");
+				
+                //Obtenemos posición del director, si no existe se lanza excepcion.
+                var directorPosition = getDirectorPosition(director);
+                if (directorPosition === -1) {
+                    throw new NotExistException();
+                }
+				//Obtenemos posición de la production en el director, si no existe se lanza excepcion.
+				directorPosition = getDirectorPosition(director);
+				var positionPro = getProPosition(production, _directores[directorPosition].dProductions);
+                if (positionPro === -1) {
+					throw new NotExistException(production.title);  
+				}
+				_directores[directorPosition].dProductions.splice(positionPro, 1);
+				return _directores[directorPosition].dProductions.length;
+			}
+			this.assingCategory = function (categoria, production){
+				//categoria tiene que ser un objeto tipo CAtegory.
+				if (!(categoria instanceof Category)) { 
+					throw new InvalidAccessMethodException();
+				}		
+				//categoria no puede estar vacio.
+				if (!categoria|| categoria === '') throw new EmptyValueException("categoria");
+				//Si el categoria no existe lo añado.
+				var categoriaPosition = getCategoryPosition(categoria);
+                if (categoriaPosition === -1) {
+					console.log("hola1");
+                    this.addCategory(categoria);
+                }
+				//categoria no puede estar vacio.
+				if (!categoria|| categoria === '') throw new EmptyValueException("categoria");
+				//Si no existe se añade.
+				if(Array.isArray(production)){
+					for(var i=0;i<_productions.length;i++){ //Por si en el array que me pasan no hay una producción.
+						if(!productionExist(production)){
+							this.addProduction(production);
+						}
+					}
+				}else if(!productionExist(production)){
+					this.addProduction(production);
+				}
+				//Añadimos al categoria la/las producciones.
+				var categoriaPosition = getCategoryPosition(categoria);
+				var posProduction = getProPosition(production, _categorias[categoriaPosition].cProductions);
+                if (posProduction !== -1) {
+					throw new NotExistException(categoria);
+                }
+				_categorias[categoriaPosition].cProductions.push(production);
+				return _categorias[categoriaPosition].cProductions.length;
 			}
         }
         VideoSystem.prototype = {}; 

@@ -26,21 +26,47 @@ function testVideoSystem(){
         console.log("--> Prueba de Name <--");
         vs.name="carflix";
         console.log("El nombre del sistema es: "+vs.name);
+        console.log("");
     }
+    function showUsers(){
+		//Recorremos los usuarios.
+		console.log ("Recorremos los usuarios.");
+		var users = vs.users;
+		var user = users.next();
+		while (user.done !== true){
+			console.log ("Username: " + user.value.username);
+			user = users.next();
+		}
+	}
     //Pruebo todas las funciones de user.
     function testUser(){
         console.log("--> Prueba de User <--");
         console.log("La longitud del array de usuarios es: "+vs.addUser(u1));
         console.log("La longitud del array de usuarios es: "+vs.addUser(u2));
+        showUsers();
         console.log("La longitud del array de usuarios es: "+vs.removeUser(u1));
+        showUsers();
+        console.log("");
     }    
+    function showDirectores(){
+		//Recorremos los usuarios.
+		console.log ("Recorremos los usuarios.");
+		var directores = vs.directores;
+		var director = directores.next();
+		while (director.done !== true){
+			console.log ("Name: " + director.value.name+", Lastname1: "+director.value.lastname1);
+			director = directores.next();
+		}
+	}
     //Prueba de Director
     function testDirector(){
         console.log("--> Prueba de Director <--");
         console.log("La longitud del array de directores es: "+vs.addDirector(dir1));
         console.log("La longitud del array de directores es: "+vs.addDirector(dir2));
+        showDirectores();
         console.log("La longitud del array de directores es: "+vs.removeDirector(dir2));
-        
+        showDirectores();
+        console.log("");
     }
     //Prueba de Production
     function testProduction(){
@@ -48,6 +74,7 @@ function testVideoSystem(){
         console.log("La longitud del array de production es: "+vs.addProduction(pro1));
         console.log("La longitud del array de production es: "+vs.addProduction(pro2));
         console.log("La longitud del array de production es: "+vs.removeProduction(pro1));
+        console.log("");
         
     }
     //Prueba de Actores
@@ -56,15 +83,43 @@ function testVideoSystem(){
         console.log("La longitud del array de actor es: "+vs.addActor(ac1));
         console.log("La longitud del array de actor es: "+vs.addActor(ac2));
         console.log("La longitud del array de actor es: "+vs.removeActor(ac2));
+        console.log("");
         
     }
+    function showCategory(){
+		//Recorremos los usuarios.
+		console.log ("Recorremos las categorias.");
+		var categorias = vs.categorias;
+		var categoria = categorias.next();
+		while (categoria.done !== true){
+			console.log ("Name: " + categoria.value.name+", Descripción: "+categoria.value.description);
+			categoria = categorias.next();
+		}
+	}
     //Prueba de Category
     function testCategory(){
         console.log("--> Prueba de Category <--");
         console.log("La longitud del array de categoria es: "+vs.addCategory(cat1));
         console.log("La longitud del array de categoria es: "+vs.addCategory(cat2));
-        console.log("La longitud del array de categoria es: "+vs.removeCategory(cat1));
+        showCategory();
+        console.log("La longitud del array de categoria es: "+vs.removeCategory(cat2));
+        showCategory();
+        console.log("");
         
+    }
+    //Prueba AssingDirector
+    function testAssingDirector(){
+        console.log("--> Prueba de AssingDirector <--");
+        console.log("La longitud del array de producciones en el director "+dir1.name +" es: "+vs.assingDirector(dir1,pro1));
+        console.log("La longitud del array de producciones en el director "+dir2.name+" es: "+vs.assingDirector(dir2,pro2));
+        //console.log("La longitud del array de producciones en el director "+dir2.name+" es: "+vs.deassingDirector(dir1,pro1));
+        console.log("");
+    }
+    function testAssingCategory(){
+        console.log("--> Prueba de AssingCategory <--");
+        console.log("La longitud del array de producciones en la categoria"+cat1.name +" es: "+vs.assingCategory(cat1,pro1));
+        console.log("La longitud del array de producciones en la categoria "+cat2.name+" es: "+vs.assingCategory(cat2,pro2));
+        console.log("");
     }
     //llamamos a los métodos.
     testName();
@@ -73,5 +128,7 @@ function testVideoSystem(){
     testProduction();
     testActor();
     testCategory();
+    testAssingDirector();
+    //testAssingCategory();
 }
 window.onload = testVideoSystem;
