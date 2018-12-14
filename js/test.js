@@ -129,6 +129,6 @@ function testVideoSystem(){
     testActor();
     testCategory();
     testAssingDirector();
-    //testAssingCategory();
+    testAssingCategory();
 }
 window.onload = testVideoSystem;

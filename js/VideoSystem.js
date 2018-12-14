@@ -388,7 +388,7 @@ var VideoSystem = (function () { //La función anónima devuelve un método getI
 				//Si todo va bien añado el categoria.
 				_categorias.push(
 					{categoria:categoria,
-					cProduction:[]}
+					cProductions:[]}
 				);
 				//Devuelvo el número de elementos que tiene el array _categorias.
 				return _categorias.length;
